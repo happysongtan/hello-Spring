@@ -1,4 +1,6 @@
 package com.example.hellospring.dto.farm;
 
-public record FarmsResponse (int id, String name,int create_at){
+import java.time.LocalDateTime;
+
+public record FarmsResponse (int id, String name, LocalDateTime create_at){
 }
