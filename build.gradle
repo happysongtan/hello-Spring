@@ -33,6 +33,7 @@ dependencies {
 
     runtimeOnly 'com.mysql:mysql-connector-j'
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    //DataSource생성,jdbcTemplate생성
     //DB 연결용 드라이버
 }
 
