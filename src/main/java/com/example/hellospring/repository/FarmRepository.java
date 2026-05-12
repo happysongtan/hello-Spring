@@ -1,4 +1,4 @@
-package com.example.hellospring.Repository;
+package com.example.hellospring.repository;
 
 import com.example.hellospring.dto.farm.FarmsMemberResponse;
 import com.example.hellospring.dto.farm.FarmsResponse;
@@ -12,7 +12,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FarmRepository {
     private final JdbcTemplate jdbcTemplate;
-    public List<FarmsResponse>findAllFarms(){
+    public List<FarmsResponse>findAll(){
         String sql= """
                     SELECT id,name,created_at
                     FROM farms
@@ -27,20 +27,6 @@ public class FarmRepository {
         );
 
     }
-    public List<FarmsMemberResponse>findAllFarmsMembers(){
-        String sql= """
-                    SELECT id,user_id,farm_id,joined_at
-                    FROM farms_members
-                """;
-        return jdbcTemplate.query(sql,(rs, rowNum) ->
-                new FarmsMemberResponse(
-                        rs.getInt("id"),
-                        rs.getInt("user_id"),
-                        rs.getInt("farm_id"),
-                        rs.getTimestamp("joined_at").toLocalDateTime()
-                )
-        );
 
-    }
 
 }

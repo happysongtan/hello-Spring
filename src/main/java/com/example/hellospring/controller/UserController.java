@@ -1,6 +1,7 @@
 package com.example.hellospring.controller;
 
-import com.example.hellospring.Repository.UserRepository;
+import com.example.hellospring.entity.User;
+import com.example.hellospring.repository.UserRepository;
 import com.example.hellospring.dto.user.UserResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,12 +13,12 @@ import java.util.List;
 public class UserController {
     private final UserRepository userRepository;
     @GetMapping("/users")
-    public List<UserResponse> getUsers(){
+    public List<User> getUsers(){
         return userRepository.findAll();
 
     }
     @GetMapping("/users/{id}")
-    public UserResponse getUser(@PathVariable int id){
+    public User getUser(@PathVariable int id){
         return userRepository.findById(id);
     }
 }
