@@ -1,13 +1,19 @@
 package com.example.hellospring.controller;
 
+import com.example.hellospring.dto.record.RecordRequest;
+import com.example.hellospring.dto.record.RecordResponse;
+import com.example.hellospring.entity.Category;
+import com.example.hellospring.entity.MonthlyHistory;
+import com.example.hellospring.entity.Record;
 import com.example.hellospring.repository.CategoryRepository;
 import com.example.hellospring.repository.MonthlyHistoryRepository;
 import com.example.hellospring.repository.RecordRepository;
 import com.example.hellospring.dto.record.CategoriesResponse;
 import com.example.hellospring.dto.record.MonthlyHistoryResponse;
-import com.example.hellospring.dto.record.RecordResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -20,14 +26,37 @@ public class RecordController {
     private final MonthlyHistoryRepository monthlyHistoryRepository;
     @GetMapping("/record")
     public List<RecordResponse> record(){
-        return recordRepository.findAll();
+        return recordRepository.findAll()
+                .stream()
+                .map(RecordResponse::new)
+                .toList();
+
+    }
+    @PostMapping("/record")
+    public void saveRecord(@RequestBody RecordRequest request) {
+        Record record = new Record(
+                request.userId(),
+                request.categoryId(),
+                request.amount(),
+                request.description(),
+                request.memo(),
+                request.recordDate()
+        );
+        recordRepository.save(record);
     }
     @GetMapping("/category")
     public List<CategoriesResponse> Category(){
-        return categoryRepository.findAll();
+
+        return categoryRepository.findAll()
+                .stream()
+                .map(CategoriesResponse::new)
+                .toList();
     }
     @GetMapping("/monthly")
     public List<MonthlyHistoryResponse> Monthly(){
-        return monthlyHistoryRepository.findAll();
+        return monthlyHistoryRepository.findAll()
+                .stream()
+                .map(MonthlyHistoryResponse::new)
+                .toList();
     }
 }

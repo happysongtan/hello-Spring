@@ -1,7 +1,6 @@
 package com.example.hellospring.repository;
 
-import com.example.hellospring.dto.farm.FarmsMemberResponse;
-import com.example.hellospring.dto.farm.FarmsResponse;
+import com.example.hellospring.entity.Farm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -12,13 +11,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FarmRepository {
     private final JdbcTemplate jdbcTemplate;
-    public List<FarmsResponse>findAll(){
+    public List<Farm>findAll(){
         String sql= """
                     SELECT id,name,created_at
                     FROM farms
                 """;
         return jdbcTemplate.query(sql,(rs, rowNum) ->
-                new FarmsResponse(
+                new Farm(
                         rs.getInt("id"),
                         rs.getString("name"),
                         rs.getTimestamp("created_at").toLocalDateTime()
@@ -26,6 +25,14 @@ public class FarmRepository {
                 )
         );
 
+    }
+    public void save(Farm farm) {
+        String sql = """
+            INSERT INTO farms(name)
+            VALUES (?)
+            """;
+
+        jdbcTemplate.update(sql, farm.getName());
     }
 
 

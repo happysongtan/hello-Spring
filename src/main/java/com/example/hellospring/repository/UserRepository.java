@@ -52,6 +52,30 @@ public class UserRepository {
                 id
         );
     }
+    public void save(User user){
+        String sql= """
+                INSERT INTO users(
+                    user_id,
+                    password,
+                    name,
+                    age,
+                    current_pig_level,
+                    monthly_income,
+                    target_expense_ratio
+                )
+                VALUES (?,?,?,?,?,?,?)    
+                """;
+         jdbcTemplate.update(
+                sql,
+                user.getUserId(),
+                user.getUserPassword(),
+                user.getName(),
+                user.getAge(),
+                user.getCurrentPigLevel(),
+                user.getMonthlyIncome(),
+                user.getTargetExpenseRatio()
+        );
+    }
 }
 // String sql = "SELECT id, user_id, user_password, name, age, current_pig_level, monthly_income, target_expense_ratio, created_at FROM users";
 //String sql =
