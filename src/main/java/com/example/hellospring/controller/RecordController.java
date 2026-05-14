@@ -10,6 +10,7 @@ import com.example.hellospring.repository.MonthlyHistoryRepository;
 import com.example.hellospring.repository.RecordRepository;
 import com.example.hellospring.dto.record.CategoriesResponse;
 import com.example.hellospring.dto.record.MonthlyHistoryResponse;
+import com.example.hellospring.service.RecordService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,42 +22,23 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 public class RecordController {
-    private final RecordRepository recordRepository;
-    private final CategoryRepository categoryRepository;
-    private final MonthlyHistoryRepository monthlyHistoryRepository;
+    private final RecordService recordService;
     @GetMapping("/record")
     public List<RecordResponse> record(){
-        return recordRepository.findAll()
-                .stream()
-                .map(RecordResponse::new)
-                .toList();
+        return recordService.getRecords();
 
     }
     @PostMapping("/record")
     public void saveRecord(@RequestBody RecordRequest request) {
-        Record record = new Record(
-                request.userId(),
-                request.categoryId(),
-                request.amount(),
-                request.description(),
-                request.memo(),
-                request.recordDate()
-        );
-        recordRepository.save(record);
+       recordService.saveRecord(request);
     }
     @GetMapping("/category")
     public List<CategoriesResponse> Category(){
 
-        return categoryRepository.findAll()
-                .stream()
-                .map(CategoriesResponse::new)
-                .toList();
+        return recordService.getCategories();
     }
     @GetMapping("/monthly")
     public List<MonthlyHistoryResponse> Monthly(){
-        return monthlyHistoryRepository.findAll()
-                .stream()
-                .map(MonthlyHistoryResponse::new)
-                .toList();
+        return recordService.getMonthlyHistories();
     }
 }
